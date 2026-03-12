@@ -26,6 +26,7 @@
 
 [Instalacion](#-como-instalarlo) |
 [Uso](#-como-se-usa) |
+[Agentes](docs/custom-agents-guide.md) |
 [Guia de Tools](docs/tools-guide.md) |
 [Contribuir](#-como-contribuir-vos-o-tus-amigos) |
 [Troubleshooting](docs/troubleshooting.md)
@@ -42,6 +43,7 @@
 - [Como instalarlo](#-como-instalarlo)
 - [Como se usa](#-como-se-usa)
 - [Dos formas de trabajar](#-dos-formas-de-trabajar-y-cuando-usar-cada-una)
+- [Agentes personalizados](#-agentes-personalizados-tus-especialistas-reutilizables)
 - [Que se instala exactamente](#-que-se-instala-exactamente)
 - [Cosas que podes pedirle a Claude Code](#-cosas-que-podes-pedirle-a-claude-code)
 - [Como contribuir](#-como-contribuir-vos-o-tus-amigos)
@@ -321,6 +323,72 @@ Asi tenes lo mejor de ambos mundos:
 
 ---
 
+## Agentes personalizados (tus especialistas reutilizables)
+
+Ademas de tener multiples Claudes en paneles y worktrees, podes crear **agentes especializados**: instrucciones permanentes que Claude activa automaticamente cuando detecta que una tarea encaja con su perfil.
+
+### Que son?
+
+Son archivos de texto (`.md`) que le dicen a Claude "cuando alguien pida hacer X, segui estas instrucciones especificas". Es como darle un manual de procedimientos a un empleado.
+
+> [!TIP]
+> **Analogia:** Sin agente, le decis "revisame el codigo" y Claude revisa lo que le parece. CON un agente `code-reviewer`, Claude sigue un checklist de 10 puntos, clasifica los problemas por severidad, y te da un reporte con formato consistente. Siempre igual, siempre completo.
+
+### Para que sirven?
+
+Para **tareas repetitivas que siempre queres que se hagan de la misma manera**:
+
+| Tarea repetitiva | Que hace el agente |
+|:-----------------|:-------------------|
+| Code review | Sigue checklist de 8 puntos, reporta con severidades |
+| Seguridad | Escanea 10 categorias de vulnerabilidad |
+| Testing | Exige TDD (test primero, codigo despues) |
+| Planificacion | Investiga antes de codear, arma plan estructurado |
+
+### Se activan solos?
+
+**Si.** Claude lee la descripcion de cada agente y decide cuando activarlo. No necesitas ningun comando especial:
+
+| Vos decis | Claude activa |
+|:----------|:-------------|
+| "Revisame el codigo" | `code-reviewer` |
+| "Hay alguna vulnerabilidad?" | `security-reviewer` |
+| "Escribi tests para esto" | `tdd-guide` |
+| "Como implemento esta feature?" | `planner` |
+
+### Como crearlos?
+
+No necesitas escribir nada a mano. Pedile a Claude Code:
+
+> "Creame un agente que revise performance en codigo Python. Que busque N+1 queries e imports innecesarios. Guardalo en `~/.claude/agents/`"
+
+Claude crea el archivo automaticamente con la estructura correcta.
+
+### Agentes incluidos en este setup
+
+| Agente | Especialidad |
+|:-------|:-------------|
+| **code-reviewer** | Calidad de codigo con checklist de 8 puntos |
+| **security-reviewer** | Vulnerabilidades con 10 categorias de escaneo |
+| **tdd-guide** | Desarrollo guiado por tests (RED-GREEN-REFACTOR) |
+| **planner** | Planificacion e investigacion antes de codear |
+
+### Cuando usar agentes vs Agent Teams vs paneles?
+
+| Situacion | Que usar |
+|:----------|:---------|
+| Quiero que Claude **siempre** revise codigo de la misma forma | **Agente custom** |
+| Quiero **varias tareas de codigo en paralelo** | **Agent Teams + Worktrees** |
+| Quiero **Claudes con propositos distintos en pantalla** | **Paneles tmux** (<kbd>Cmd</kbd>+<kbd>N</kbd>) |
+| Quiero **combinar todo** | Paneles + agente + worktrees |
+
+> [!NOTE]
+> Para la guia completa con ejemplos, como crear buenos agentes, y casos avanzados: [Guia de Agentes Personalizados](docs/custom-agents-guide.md)
+
+<p align="right"><a href="#readme-top">volver arriba</a></p>
+
+---
+
 ## Que se instala exactamente
 
 <details open>
@@ -359,6 +427,22 @@ No es una herramienta que se instala aparte. Es una capacidad que ya tiene Claud
 | **Agent Teams** | Claude crea y coordina otros Claudes automaticamente |
 | **Worktrees** | Cada agente trabaja en una copia aislada (no se pisan) |
 | **Merge automatico** | El lider junta todo cuando terminan |
+
+</details>
+
+<details>
+<summary><strong>Agentes personalizados (especialistas reutilizables)</strong></summary>
+
+Se instalan en `~/.claude/agents/` y Claude los activa automaticamente:
+
+| Agente | Que hace | Se activa cuando |
+|:-------|:---------|:----------------|
+| **code-reviewer** | Revisa calidad con checklist de 8 puntos | "Revisame el codigo" |
+| **security-reviewer** | Busca 10 categorias de vulnerabilidad | "Revisa la seguridad" |
+| **tdd-guide** | Guia desarrollo test-first (RED-GREEN-REFACTOR) | "Escribi tests" |
+| **planner** | Investiga y planifica antes de codear | "Planifica esta feature" |
+
+Podes crear mas agentes vos mismo o pedirle a Claude que los cree. Ver [Guia de Agentes](docs/custom-agents-guide.md).
 
 </details>
 
@@ -505,6 +589,7 @@ Todo esto esta detallado en [`CONTRIBUTING.md`](CONTRIBUTING.md) y en la Parte 3
 ~/.config/ghostty/config     ← Config del terminal (tema, atajos, transparencia)
 ~/.tmux.conf                 ← Config de tmux (tema, plugins, bindings de Claude)
 ~/claude-launcher.sh         ← Script que ejecutan cc, ccnew, ccresume, ccpick
+~/.claude/agents/            ← Agentes personalizados (code-reviewer, security, etc.)
 ~/.claude/rules/             ← Reglas globales (TDD, seguridad, estilo, etc.)
 ~/.claude/settings.json      ← Settings de Claude Code (agent teams, permisos)
 ~/.tmux/plugins/             ← Plugins de tmux (yank, mouse, resurrect, etc.)
@@ -561,6 +646,7 @@ Edita `~/claude-launcher.sh` y sacale `--dangerously-skip-permissions` a la vari
 | Documento | Que tiene |
 |:----------|:---------|
 | [Agent Teams + Worktrees](docs/agent-teams-guide.md) | Guia completa del trabajo paralelo automatico |
+| [Agentes Personalizados](docs/custom-agents-guide.md) | Como crear, usar y pedirle a Claude que haga agentes especializados |
 | [Guia de Tools (No-Tech)](docs/tools-guide.md) | Cada herramienta explicada con analogias de la vida real |
 | [Guia de Uso](docs/usage-guide.md) | Instrucciones detalladas de como usar todo |
 | [Referencia de Atajos](docs/keybindings-reference.md) | Tabla completa de todos los atajos de teclado |
@@ -606,6 +692,7 @@ rm -rf ~/claude-tools/              # Borrar herramientas
 | `install.sh` | Claude Code (o vos) | Ejecutar la instalacion completa |
 | `scripts/*.sh` | Claude Code (o vos) | Scripts individuales de instalacion |
 | `configs/*` | Los scripts de instalacion | Archivos de config que se copian a tu sistema |
+| `configs/agents/*` | Los scripts de instalacion | Agentes personalizados que se copian a `~/.claude/agents/`. Podes agregar los tuyos aca |
 | `.github/pull_request_template.md` | GitHub | Template automatico cuando se crea un PR |
 | `README.md` | Vos | Este archivo. La explicacion general de todo |
 | `docs/*` | Vos | Guias de uso y referencia |

@@ -67,6 +67,25 @@ for rule in "${LANG_RULES[@]}"; do
     fi
 done
 
+# ── Install custom agents ─────────────────────────────────
+echo "==> Installing custom agents..."
+AGENTS_DIR="$CLAUDE_DIR/agents"
+mkdir -p "$AGENTS_DIR"
+
+AGENTS_SRC="$REPO_DIR/configs/agents"
+if [[ -d "$AGENTS_SRC" ]]; then
+    for agent_file in "$AGENTS_SRC"/*.md; do
+        if [[ -f "$agent_file" ]]; then
+            agent_name="$(basename "$agent_file")"
+            cp "$agent_file" "$AGENTS_DIR/$agent_name"
+            echo "      $agent_name"
+        fi
+    done
+    echo "    Custom agents installed to $AGENTS_DIR"
+else
+    echo "    WARNING: No agents directory found at $AGENTS_SRC"
+fi
+
 # ── Install Claude settings ─────────────────────────────────
 echo "==> Installing Claude Code settings..."
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"

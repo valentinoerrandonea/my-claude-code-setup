@@ -183,6 +183,28 @@ Claude automaticamente:
 
 ---
 
+## Agentes Personalizados (tus especialistas reutilizables)
+
+**Que es:** Son "manuales de procedimiento" que le das a Claude Code para tareas especificas. Cuando Claude detecta que la tarea encaja con un agente, lo activa automaticamente y sigue las instrucciones al pie de la letra.
+
+**Analogia:** Imaginate que tenes una cadena de restaurantes. En vez de explicarle a cada cocinero nuevo como hacer la pizza, le das una receta escrita con pasos exactos: ingredientes, tiempos, temperatura. El agente es esa receta: instrucciones fijas que se aplican siempre que se necesite esa tarea.
+
+**Ejemplo concreto:** Sin agente, le decis "revisame el codigo" y Claude revisa lo que le parece. CON el agente `code-reviewer`, Claude sigue un checklist de 8 puntos (legibilidad, manejo de errores, seguridad, etc.), clasifica cada hallazgo por severidad (CRITICAL/HIGH/MEDIUM/LOW), y te da un reporte consistente. Siempre igual, siempre completo.
+
+**Cuando usarlo:** Cada vez que tengas una tarea que haces seguido y queres que siempre se haga de la misma manera profesional:
+- Code review → agente `code-reviewer`
+- Auditoria de seguridad → agente `security-reviewer`
+- Escribir tests → agente `tdd-guide`
+- Planificar una feature → agente `planner`
+
+**Donde estan:** `~/.claude/agents/` (se instalan automaticamente con este setup)
+
+**Como crear uno nuevo:** Pedile a Claude Code: "Creame un agente que haga [tarea]. Guardalo en `~/.claude/agents/`"
+
+**Para la guia completa:** Lee [Agentes Personalizados - Guia Completa](custom-agents-guide.md)
+
+---
+
 ## Herramientas Multi-Agente (externas)
 
 Estas son herramientas de terceros mas avanzadas para cuando queres que multiples Claudes trabajen de manera coordinada automaticamente (no manual con tmux panels).
@@ -345,6 +367,7 @@ Estos son "mejoras" para tmux que se instalan solos. No tenes que hacer nada.
 |-----------|----------|------------|
 | Trabajo normal del dia a dia | Un solo Claude (`cc`) | Facil |
 | Quiero 2-3 Claudes que vea en pantalla | Paneles tmux (`Cmd+N`) | Facil |
+| **Tarea repetitiva con pasos fijos** | **Agente personalizado** | **Facil (se activa solo)** |
 | **Tareas paralelas que se pueden pisar** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
 | **Proyecto grande con muchas partes** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
 | **Comparar enfoques distintos** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
@@ -356,4 +379,4 @@ Estos son "mejoras" para tmux que se instalan solos. No tenes que hacer nada.
 | Quiero conectar Claude con servicios externos | MCP Servers | Intermedio |
 | Quiero aprender mas trucos | awesome-claude-code | - |
 
-**Recomendacion:** Para la mayoria de la gente, **Agent Teams + Worktrees** es todo lo que necesitas. Solo le decis a Claude "hacelo en paralelo" y el se encarga. Las herramientas externas (Swarm, Zerg, etc.) son para casos mas especificos.
+**Recomendacion:** Para la mayoria de la gente, **agentes personalizados + Agent Teams + Worktrees** es todo lo que necesitas. Los agentes te dan consistencia en tareas repetitivas, y los Agent Teams te dan velocidad en tareas grandes. Las herramientas externas (Swarm, Zerg, etc.) son para casos mas especificos.

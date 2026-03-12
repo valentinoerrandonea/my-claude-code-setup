@@ -29,8 +29,9 @@ For a minimal install (skip multi-agent tools):
 3. **Ghostty config** - Terminal emulator configuration with tmux integration keybindings
 4. **Shell functions** - `cc`, `ccnew`, `ccresume`, `ccpick` commands
 5. **Claude Code rules** - Global rules from everything-claude-code (coding style, TDD, security, agents, etc.)
-6. **Claude Code settings** - Agent teams enabled, skip-permissions prompt disabled
-7. **Multi-agent tools** - Claude Swarm, Zerg, Overstory, ccswarm, Ruflo, and reference repos
+6. **Custom agents** - Specialist agents installed to `~/.claude/agents/` (code-reviewer, security-reviewer, tdd-guide, planner). Contributors can add new agents to `configs/agents/`.
+7. **Claude Code settings** - Agent teams enabled, skip-permissions prompt disabled
+8. **Multi-agent tools** - Claude Swarm, Zerg, Overstory, ccswarm, Ruflo, and reference repos
 
 ### Manual Step-by-Step Install
 
@@ -69,6 +70,7 @@ Tell the user:
 | Ghostty config | `~/.config/ghostty/config` |
 | Launcher script | `~/claude-launcher.sh` |
 | Claude rules | `~/.claude/rules/` |
+| Custom agents | `~/.claude/agents/` |
 | Claude settings | `~/.claude/settings.json` |
 | tmux plugins | `~/.tmux/plugins/` |
 | Multi-agent tools | `~/claude-tools/` |
@@ -229,6 +231,16 @@ Follow these rules depending on what you're adding:
    - Global npm packages via `npm install -g`
    - Python tools in `~/claude-tools/.venv/`
 
+#### Adding a New Custom Agent
+
+1. **Create the agent file** in `configs/agents/<agent-name>.md`
+   - Must have YAML frontmatter with `name`, `description`, `tools`, and `model`
+   - The `description` field is CRITICAL: Claude reads it to auto-activate the agent
+   - Body contains the system prompt with instructions, checklists, output format
+2. **`scripts/install-rules.sh` already handles copying** all `.md` files from `configs/agents/` to `~/.claude/agents/`
+3. **Update `docs/custom-agents-guide.md`** to document the new agent
+4. **Update `README.md`** agent tables if it's a major addition
+
 #### Adding a New Skill or Rule
 
 1. **Include the skill/rule files** in the repo under an appropriate path
@@ -254,6 +266,7 @@ This is MANDATORY. No PR gets merged without documentation updates.
 | `README.md` | Adding new tools (update tables), changing commands, or modifying architecture. |
 | `docs/keybindings-reference.md` | Any keybinding added or changed. |
 | `docs/troubleshooting.md` | Known issues, gotchas, or anything that might confuse users. |
+| `docs/custom-agents-guide.md` | Adding or modifying custom agents, changing how agents work. |
 | `docs/multi-agent-tools.md` | Adding a new multi-agent tool or changing how existing ones work. |
 | `docs/usage-guide.md` | Changes to workflow, commands, or how things are used. |
 | This file (`CLAUDE.md`) | Changes to install steps, file locations, or contribution process. |
@@ -347,6 +360,11 @@ claude-code-power-setup/
 ├── .github/
 │   └── pull_request_template.md     # PR template
 ├── configs/
+│   ├── agents/                      # Custom agents (installed to ~/.claude/agents/)
+│   │   ├── code-reviewer.md         # Code quality reviewer
+│   │   ├── security-reviewer.md     # Security vulnerability scanner
+│   │   ├── tdd-guide.md             # Test-driven development coach
+│   │   └── planner.md               # Implementation planner
 │   ├── ghostty.conf                 # Ghostty terminal config
 │   ├── tmux.conf                    # tmux config with theme + plugins
 │   ├── shell-functions.sh           # cc/ccnew/ccresume/ccpick
@@ -360,6 +378,7 @@ claude-code-power-setup/
 │   ├── install-rules.sh             # Install Claude Code rules + settings
 │   └── install-tools.sh             # Install multi-agent tools
 └── docs/
+    ├── custom-agents-guide.md        # Custom agents: creation, usage, examples
     ├── tools-guide.md               # Non-technical guide to ALL tools
     ├── usage-guide.md               # How to use the setup
     ├── keybindings-reference.md     # Complete keybinding tables
