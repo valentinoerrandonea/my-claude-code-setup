@@ -132,6 +132,75 @@ Los tres trabajan al mismo tiempo. Te moves entre ellos para ver como van.
 
 ---
 
+## Agent Teams + Worktrees (trabajo paralelo automatico)
+
+Esta es la feature mas potente del setup. En vez de abrir paneles manualmente y darle tareas a cada Claude, le hablas a **un solo Claude** y el se encarga de todo.
+
+### Como funciona
+
+```
+Vos: "Implementa el sistema de notificaciones. Hacelo en paralelo."
+
+Claude (lider):
+  ├── Crea Agente 1 → trabaja en su copia aislada → backend
+  ├── Crea Agente 2 → trabaja en su copia aislada → tests
+  └── Crea Agente 3 → trabaja en su copia aislada → docs
+
+  ... los 3 trabajan al mismo tiempo ...
+
+Claude (lider): "Listo. Mergee todo. Aca tenes el resumen."
+```
+
+### Por que es mejor que paneles manuales
+
+| Paneles tmux (Cmd+N) | Agent Teams + Worktrees |
+|----------------------|------------------------|
+| Vos abris cada panel | Claude los crea solo |
+| Vos le das la tarea a cada uno | Claude reparte las tareas |
+| Se pueden pisar entre ellos | Cada uno trabaja en su copia aislada |
+| Vos tenes que mergear | Claude mergea automaticamente |
+| Necesitas estar mirando | Claude te avisa cuando termina |
+
+### Como usarlo
+
+**Requisito:** Tu proyecto tiene que tener Git. Si no lo tiene:
+```bash
+cd tu-proyecto
+git init && git add -A && git commit -m "initial commit"
+```
+
+No necesitas GitHub. Solo Git local.
+
+**Despues, simplemente decile a Claude:**
+
+> "Hacelo en paralelo con worktrees"
+
+Ejemplos:
+
+> "Implementa login, registro y recuperacion de password en paralelo con worktrees"
+
+> "Revisame seguridad, performance y calidad de codigo al mismo tiempo"
+
+> "Haceme 3 versiones distintas de la landing page en paralelo"
+
+Claude se encarga de crear los agentes, repartir las tareas, esperar a que terminen, y mergear todo.
+
+### Que ves vos mientras trabajan
+
+No ves las conversaciones individuales de cada agente. Ves los mensajes del lider en tu chat:
+
+```
+"Cree 3 agentes. Estan trabajando..."
+"El agente de docs termino."
+"El agente de tests termino."
+"El agente de backend termino. Mergeando..."
+"Listo. Todo mergeado. 0 conflictos. Aca el resumen:"
+```
+
+Para la guia completa: [Agent Teams + Worktrees Guide](docs/agent-teams-guide.md)
+
+---
+
 ## Que se instala exactamente
 
 ### Lo esencial
@@ -153,6 +222,16 @@ Los tres trabajan al mismo tiempo. Te moves entre ellos para ver como van.
 | **tmux-continuum** | Auto-guarda cada 15 minutos |
 | **tmux-sensible** | Configuraciones logicas por defecto |
 | **tmux-open** | Click en URLs para abrirlas en el navegador |
+
+### Agent Teams + Worktrees (viene incluido)
+
+No es una herramienta que se instala aparte. Es una capacidad que ya tiene Claude Code y que este setup deja configurada y lista para usar. Solo necesitas un repo de Git y decirle "hacelo en paralelo".
+
+| Componente | Que hace |
+|------------|----------|
+| **Agent Teams** | Claude crea y coordina otros Claudes automaticamente |
+| **Worktrees** | Cada agente trabaja en una copia aislada (no se pisan) |
+| **Merge automatico** | El lider junta todo cuando terminan |
 
 ### Reglas globales para Claude Code
 
@@ -301,6 +380,7 @@ Edita `~/claude-launcher.sh` y sacale `--dangerously-skip-permissions` a la vari
 
 | Documento | Que tiene |
 |-----------|----------|
+| [Agent Teams + Worktrees](docs/agent-teams-guide.md) | Guia completa del trabajo paralelo automatico |
 | [Guia de Tools (No-Tech)](docs/tools-guide.md) | Cada herramienta explicada con analogias de la vida real |
 | [Guia de Uso](docs/usage-guide.md) | Instrucciones detalladas de como usar todo |
 | [Referencia de Atajos](docs/keybindings-reference.md) | Tabla completa de todos los atajos de teclado |

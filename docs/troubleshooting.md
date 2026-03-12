@@ -177,6 +177,70 @@ Then rebuild:
 cd ~/claude-tools/ccswarm && cargo build --release
 ```
 
+## Agent Teams + Worktrees Issues
+
+### "fatal: not a git repository" when using Agent Teams
+
+**Cause:** Your project directory is not a Git repository. Worktrees require Git.
+
+**Fix:**
+```bash
+cd your-project
+git init
+git add -A
+git commit -m "initial commit"
+```
+
+You do NOT need GitHub. Just local Git.
+
+### Agents seem to conflict / merge fails
+
+**Cause:** Two agents modified the same file.
+
+**Fix:** This can happen if the task split was too broad. The leader Claude should resolve merge conflicts automatically. If it doesn't:
+
+1. Check `git status` for conflicts
+2. Resolve them manually or ask Claude to resolve them
+3. `git add .` and `git commit`
+
+**Prevention:** When asking for parallel work, be specific about which files/directories each agent should touch:
+
+> "Agent 1: only modify src/auth/. Agent 2: only modify tests/auth/. Agent 3: only modify docs/"
+
+### Worktree folders left behind
+
+**Cause:** An agent crashed or was interrupted before cleanup.
+
+**Fix:**
+```bash
+git worktree prune
+rm -rf .claude/worktrees/
+```
+
+### Agent Teams not working ("teams not enabled")
+
+**Cause:** The experimental flag is not set.
+
+**Fix:** Verify `~/.claude/settings.json` contains:
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+If missing, re-run:
+```bash
+bash scripts/install-rules.sh
+```
+
+### Too many agents making computer slow
+
+**Cause:** Each agent uses CPU and memory. 5+ agents can be heavy.
+
+**Fix:** Keep it to 3-4 agents max for most tasks. If your machine is struggling, use 2 agents or work sequentially.
+
 ## Nuclear Reset
 
 If everything is broken and you want to start fresh:

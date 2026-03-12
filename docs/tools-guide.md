@@ -155,9 +155,37 @@ Te muestra una lista de todas tus conversaciones anteriores para que elijas cual
 
 ---
 
-## Herramientas Multi-Agente
+## Agent Teams + Worktrees (lo mas importante)
 
-Estas son herramientas mas avanzadas para cuando queres que multiples Claudes trabajen de manera coordinada automaticamente (no manual con tmux panels).
+Esta es la feature mas poderosa de todo el setup. Merece su propia seccion.
+
+**Que es:** La capacidad de que UN solo Claude cree automaticamente VARIOS Claudes, les reparta tareas, y cada uno trabaje en su propia copia aislada del proyecto sin pisarse.
+
+**Analogia:** Sos el dueño de una empresa. Tenes un gerente general (Claude lider) al que le decis "necesito que se hagan estas 3 cosas". El gerente llama a 3 empleados, le da a cada uno su tarea y su propia oficina (worktree), y cuando terminan el gerente junta todo en un solo entregable.
+
+**Como se usa:** Le hablas a UN solo Claude Code y le decis algo como:
+
+```
+"Quiero que hagas la API de login, los tests, y la documentacion.
+Hacelo en paralelo con worktrees."
+```
+
+Claude automaticamente:
+1. Crea 3 agentes
+2. Cada uno trabaja en su propia copia del proyecto (worktree)
+3. No se pueden pisar entre ellos
+4. Cuando terminan, Claude mergea todo
+5. Te da el resultado final
+
+**Requisito:** Tu carpeta de proyecto tiene que ser un repositorio de Git. Si no lo es, simplemente corres `git init` y listo. No necesitas GitHub ni internet.
+
+**Para la guia completa con ejemplos:** Lee [Agent Teams + Worktrees Guide](agent-teams-guide.md)
+
+---
+
+## Herramientas Multi-Agente (externas)
+
+Estas son herramientas de terceros mas avanzadas para cuando queres que multiples Claudes trabajen de manera coordinada automaticamente (no manual con tmux panels).
 
 ### Claude Swarm
 
@@ -313,14 +341,19 @@ Estos son "mejoras" para tmux que se instalan solos. No tenes que hacer nada.
 
 ## Resumen: Cuando Usar Que
 
-| Situacion | Que usar |
-|-----------|----------|
-| Trabajo normal del dia a dia | `cc` + tmux panels (`Cmd+N`) |
-| Quiero 2-4 Claudes manuales | tmux panels |
-| Quiero un equipo de agentes coordinado | Claude Swarm |
-| Quiero muchos agentes en paralelo rapido | Zerg |
-| Quiero ver que hacen mis agentes en un dashboard | Overstory |
-| Quiero automatizar pasos repetitivos | Ruflo |
-| Quiero maximo rendimiento en coordinacion | ccswarm |
-| Quiero conectar Claude con servicios externos | MCP Servers |
-| Quiero aprender mas trucos | awesome-claude-code |
+| Situacion | Que usar | Dificultad |
+|-----------|----------|------------|
+| Trabajo normal del dia a dia | Un solo Claude (`cc`) | Facil |
+| Quiero 2-3 Claudes que vea en pantalla | Paneles tmux (`Cmd+N`) | Facil |
+| **Tareas paralelas que se pueden pisar** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
+| **Proyecto grande con muchas partes** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
+| **Comparar enfoques distintos** | **Agent Teams + Worktrees** | **Facil (le decis y listo)** |
+| Quiero un equipo con roles definidos en YAML | Claude Swarm | Intermedio |
+| Quiero muchos agentes en masa | Zerg | Intermedio |
+| Quiero ver agentes en un dashboard | Overstory | Intermedio |
+| Quiero automatizar pasos repetitivos | Ruflo | Intermedio |
+| Quiero maximo rendimiento en coordinacion | ccswarm | Avanzado |
+| Quiero conectar Claude con servicios externos | MCP Servers | Intermedio |
+| Quiero aprender mas trucos | awesome-claude-code | - |
+
+**Recomendacion:** Para la mayoria de la gente, **Agent Teams + Worktrees** es todo lo que necesitas. Solo le decis a Claude "hacelo en paralelo" y el se encarga. Las herramientas externas (Swarm, Zerg, etc.) son para casos mas especificos.

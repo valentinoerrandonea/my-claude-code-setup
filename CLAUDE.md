@@ -75,7 +75,114 @@ Tell the user:
 
 ---
 
-## Part 2: Contributing (Adding New Tools, Skills, or Changes)
+## Part 2: Agent Teams + Worktrees (Parallel Work)
+
+When the user asks you to do multiple tasks in parallel, or when a task is large enough to benefit from parallel execution, use Agent Teams with worktree isolation.
+
+### When to Use This
+
+- User explicitly asks for parallel work ("hacelo en paralelo", "dividi esto en partes")
+- A feature involves independent parts: backend + tests + docs
+- A code review should cover multiple dimensions: security + performance + quality
+- A refactor can be split into modules that don't overlap
+- The user wants to compare multiple approaches to the same problem
+
+### How to Orchestrate
+
+#### Step 1: Verify the project is a git repo
+
+```bash
+git rev-parse --git-dir 2>/dev/null || (git init && git add -A && git commit -m "initial commit")
+```
+
+If it's not a git repo, initialize one. Worktrees require Git.
+
+#### Step 2: Plan the task split
+
+Before spawning agents, analyze the task and split it into parts that can be done independently. Each part should touch DIFFERENT files to minimize merge conflicts.
+
+Good split: Agent 1 does `src/auth/`, Agent 2 does `tests/auth/`, Agent 3 does `docs/`
+Bad split: Agent 1 and Agent 2 both modify `src/index.ts`
+
+#### Step 3: Spawn agents with worktree isolation
+
+Use the `Agent` tool with `isolation: "worktree"` for each sub-task:
+
+```
+Agent(
+  subagent_type: "general-purpose",
+  isolation: "worktree",
+  prompt: "Your task: implement the authentication API in src/auth/. Create the routes, middleware, and database models. Do NOT modify files outside src/auth/.",
+  description: "Implement auth API",
+  name: "agent-backend"
+)
+```
+
+Launch ALL agents in a SINGLE message (parallel, not sequential):
+
+```
+# In ONE message, launch all agents:
+Agent(name: "agent-backend", isolation: "worktree", prompt: "...")
+Agent(name: "agent-tests", isolation: "worktree", prompt: "...")
+Agent(name: "agent-docs", isolation: "worktree", prompt: "...")
+```
+
+#### Step 4: Each agent works in isolation
+
+Each agent gets its own worktree (a copy of the repo in its own branch). They cannot interfere with each other.
+
+#### Step 5: Collect results and merge
+
+When agents finish, they return their results including the worktree path and branch name. Merge each branch:
+
+```bash
+git merge <agent-branch-name> --no-edit
+```
+
+If there are conflicts, resolve them. Then clean up:
+
+```bash
+git worktree prune
+```
+
+#### Step 6: Report to the user
+
+Tell the user:
+- What each agent did
+- Whether there were merge conflicts and how they were resolved
+- A summary of all changes
+- Whether tests pass (if applicable)
+
+### Important Rules
+
+- ALWAYS use `isolation: "worktree"` when running parallel agents that modify files
+- ALWAYS launch agents in a single message for true parallel execution
+- Give each agent CLEAR boundaries (which files/directories they own)
+- Tell agents explicitly NOT to modify files outside their scope
+- Keep agents to 3-5 maximum for practical performance
+- After merging, run tests if the project has them
+- If an agent fails, report it to the user and offer to retry
+
+### Example: Full Feature Implementation
+
+User says: "Implementa un sistema de notificaciones en paralelo"
+
+You do:
+
+1. Analyze the project structure
+2. Plan the split:
+   - Agent 1: Backend service (`src/notifications/`)
+   - Agent 2: Tests (`tests/notifications/`)
+   - Agent 3: Documentation (`docs/notifications.md`, `README.md`)
+3. Spawn all 3 agents with `isolation: "worktree"` in a single message
+4. Wait for all to complete
+5. Merge branches one by one
+6. Run tests
+7. Report results
+
+---
+
+## Part 3: Contributing (Adding New Tools, Skills, or Changes)
 
 This repo is meant to evolve. When the user asks you to add a new tool, skill, config, or any improvement, follow this process **exactly**.
 
@@ -227,7 +334,7 @@ Before creating the PR, verify ALL of these:
 
 ---
 
-## Part 3: Repository Structure Reference
+## Part 4: Repository Structure Reference
 
 ```
 claude-code-power-setup/
@@ -255,6 +362,7 @@ claude-code-power-setup/
     ├── tools-guide.md               # Non-technical guide to ALL tools
     ├── usage-guide.md               # How to use the setup
     ├── keybindings-reference.md     # Complete keybinding tables
+    ├── agent-teams-guide.md         # Agent Teams + Worktrees guide
     ├── multi-agent-tools.md         # Multi-agent tools deep dive
     └── troubleshooting.md           # Common issues and fixes
 ```

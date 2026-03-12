@@ -153,9 +153,47 @@ Configure the dropdown size in the Ghostty config:
 - `quick-terminal-size = 40%` (percentage of screen height)
 - `quick-terminal-position = top` (where it appears)
 
-## Multi-Agent Tools
+## Agent Teams + Worktrees (trabajo paralelo automatico)
 
-The setup includes several multi-agent orchestration tools installed in `~/claude-tools/`:
+La forma mas potente de trabajar. En vez de abrir paneles manuales, le decis a UN solo Claude que haga varias cosas en paralelo y el se encarga.
+
+### Como usarlo
+
+**Requisito:** Tu proyecto necesita Git. Si no lo tiene: `git init && git add -A && git commit -m "init"`
+
+**Despues, simplemente decile:**
+
+> "Implementa X, Y y Z en paralelo con worktrees"
+
+### Que pasa internamente
+
+1. Claude crea agentes (otros Claudes)
+2. Cada agente recibe su tarea y trabaja en su propia copia del proyecto (worktree)
+3. No se pueden pisar entre ellos
+4. Cuando terminan, Claude mergea todo automaticamente
+5. Te da un resumen de lo que hizo cada uno
+
+### Cuando usar paneles vs Agent Teams
+
+| Quiero... | Usar |
+|-----------|------|
+| Ver a cada Claude trabajar en pantalla | Paneles tmux (`Cmd+N`) |
+| Que Claude maneje todo solo | Agent Teams + Worktrees |
+| Tareas que tocan archivos distintos | Agent Teams + Worktrees |
+| Tareas que necesitan mi input constante | Paneles tmux |
+| Proyecto grande, muchas partes | Agent Teams + Worktrees |
+
+### Combinar ambos
+
+Podes usar un panel tmux con el Claude lider (que orquesta Agent Teams) y otros paneles para otras cosas. Son independientes.
+
+Para la guia completa: [Agent Teams + Worktrees Guide](agent-teams-guide.md)
+
+---
+
+## Multi-Agent Tools (herramientas externas)
+
+El setup tambien incluye herramientas de terceros para orquestacion avanzada, instaladas en `~/claude-tools/`:
 
 | Tool | What it does |
 |------|-------------|
@@ -165,4 +203,4 @@ The setup includes several multi-agent orchestration tools installed in `~/claud
 | **ccswarm** | Rust-based coordinator for Claude Code instances |
 | **Ruflo** | Workflow automation with multi-step pipelines |
 
-These are advanced tools for power users who want to go beyond the manual multi-panel approach.
+For most users, Agent Teams + Worktrees is enough. These tools are for power users who need more control.
