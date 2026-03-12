@@ -110,58 +110,87 @@ Escribilos en tu terminal (Ghostty):
 | `` Cmd+` `` | Terminal dropdown rapido (aparece desde arriba) |
 | `Cmd+Shift+,` | Recargar config de Ghostty |
 
-### Ejemplo: Trabajar con 3 agentes a la vez
+---
+
+## Dos formas de trabajar (y cuando usar cada una)
+
+Este setup te da dos formas de usar multiples Claudes. Es importante entender la diferencia:
+
+### Problema: varios Claudes tocando el mismo codigo
+
+Si abris 3 paneles con `Cmd+N` y los 3 modifican el mismo archivo al mismo tiempo, **se van a pisar**. Uno escribe una funcion, el otro la sobreescribe, y se rompe todo. Esto es un problema real.
+
+### Solucion: separar por AREA (paneles) y por CODIGO (worktrees)
+
+```
+┌─────────────────┬─────────────────┐
+│   "coder"       │   "researcher"  │  ← Paneles tmux (Cmd+N)
+│                 │                 │     Cada uno tiene un ROL distinto
+│   Escribe       │   Responde      │     NO tocan el mismo codigo
+│   codigo        │   preguntas     │
+│                 │                 │
+│   (usa worktrees│                 │
+│    internamente │                 │
+│    si necesita  │                 │
+│    paralelizar) │                 │
+├─────────────────┼─────────────────┤
+│   "planner"     │   "analyzer"    │
+│                 │                 │
+│   Planifica     │   Analiza       │
+│   la proxima    │   performance   │
+│   feature       │   y seguridad   │
+│                 │                 │
+└─────────────────┴─────────────────┘
+```
+
+### Paneles tmux (`Cmd+N`) → para ROLES distintos
+
+Cada panel es un Claude con un **proposito diferente**. No deberian tocar los mismos archivos al mismo tiempo.
+
+**Ejemplos de roles:**
+
+| Panel | Rol | Que le decis |
+|-------|-----|-------------|
+| `coder` | Programador | "Implementa la feature de login" |
+| `researcher` | Investigador | "Busca las mejores practicas para auth con JWT" |
+| `planner` | Planificador | "Arma el plan de las proximas 3 features" |
+| `analyzer` | Analista | "Revisame el proyecto y decime que mejorar" |
+| `reviewer` | Revisor | "Hace code review de lo que hizo el coder" |
+
+Como cada uno tiene un proposito distinto, no se pisan. El coder escribe codigo, el researcher busca info, el planner arma documentos, el analyzer lee sin modificar.
+
+**Ejemplo paso a paso:**
 
 ```
 1. Abri terminal y escribi: cc
-2. Tocas Cmd+N → aparece un segundo Claude Code
+2. Tocas Cmd+N → aparece un segundo Claude
 3. Tocas Cmd+N → aparece un tercero (grilla de 3)
-4. Tocas Cmd+Ctrl+R → escribis "main"
-5. Te moves al segundo con Option+Ctrl+Derecha
-6. Tocas Cmd+Ctrl+R → escribis "tests"
-7. Te moves al tercero
-8. Tocas Cmd+Ctrl+R → escribis "docs"
+4. Renombras cada uno con Cmd+Ctrl+R:
+   - "coder" → "Implementa el sistema de pagos"
+   - "researcher" → "Investiga como integrar Stripe en Node.js"
+   - "reviewer" → "Cuando el coder termine, revisale el codigo"
 ```
 
-Ahora le decis a cada uno que hacer:
-- **main**: "Implementa la API de autenticacion"
-- **tests**: "Escribi tests de integracion para los endpoints de auth"
-- **docs**: "Actualiza la documentacion de la API"
+### Worktrees → para CODIGO en paralelo (dentro de un panel)
 
-Los tres trabajan al mismo tiempo. Te moves entre ellos para ver como van.
+Cuando UN Claude necesita hacer varias cosas que tocan el mismo codigo, usa **worktrees**. Cada tarea trabaja en su propia copia aislada del proyecto, y al final se mergea todo.
 
----
+**Ejemplo:** Le decis al panel "coder":
 
-## Agent Teams + Worktrees (trabajo paralelo automatico)
+> "Implementa login, registro y recuperacion de password en paralelo con worktrees"
 
-Esta es la feature mas potente del setup. En vez de abrir paneles manualmente y darle tareas a cada Claude, le hablas a **un solo Claude** y el se encarga de todo.
-
-### Como funciona
+Ese Claude crea 3 agentes internos, cada uno con su copia aislada:
 
 ```
-Vos: "Implementa el sistema de notificaciones. Hacelo en paralelo."
+Claude "coder":
+  ├── Agente 1 → copia aislada → implementa login
+  ├── Agente 2 → copia aislada → implementa registro
+  └── Agente 3 → copia aislada → implementa recuperacion
 
-Claude (lider):
-  ├── Crea Agente 1 → trabaja en su copia aislada → backend
-  ├── Crea Agente 2 → trabaja en su copia aislada → tests
-  └── Crea Agente 3 → trabaja en su copia aislada → docs
+  ... los 3 trabajan sin pisarse ...
 
-  ... los 3 trabajan al mismo tiempo ...
-
-Claude (lider): "Listo. Mergee todo. Aca tenes el resumen."
+Claude "coder": "Listo. Mergee todo. Aca tenes el resumen."
 ```
-
-### Por que es mejor que paneles manuales
-
-| Paneles tmux (Cmd+N) | Agent Teams + Worktrees |
-|----------------------|------------------------|
-| Vos abris cada panel | Claude los crea solo |
-| Vos le das la tarea a cada uno | Claude reparte las tareas |
-| Se pueden pisar entre ellos | Cada uno trabaja en su copia aislada |
-| Vos tenes que mergear | Claude mergea automaticamente |
-| Necesitas estar mirando | Claude te avisa cuando termina |
-
-### Como usarlo
 
 **Requisito:** Tu proyecto tiene que tener Git. Si no lo tiene:
 ```bash
@@ -171,33 +200,43 @@ git init && git add -A && git commit -m "initial commit"
 
 No necesitas GitHub. Solo Git local.
 
-**Despues, simplemente decile a Claude:**
+### Resumen: cuando usar que
 
-> "Hacelo en paralelo con worktrees"
+| Situacion | Que usar |
+|-----------|----------|
+| Quiero Claudes con propositos distintos (uno codea, otro investiga) | **Paneles tmux** (`Cmd+N`) |
+| Quiero que un Claude haga varias tareas de codigo en paralelo | **Worktrees** (decile "hacelo en paralelo con worktrees") |
+| Quiero ambas cosas | **Paneles para roles + worktrees dentro del panel que codea** |
 
-Ejemplos:
-
-> "Implementa login, registro y recuperacion de password en paralelo con worktrees"
-
-> "Revisame seguridad, performance y calidad de codigo al mismo tiempo"
-
-> "Haceme 3 versiones distintas de la landing page en paralelo"
-
-Claude se encarga de crear los agentes, repartir las tareas, esperar a que terminen, y mergear todo.
-
-### Que ves vos mientras trabajan
-
-No ves las conversaciones individuales de cada agente. Ves los mensajes del lider en tu chat:
+### El combo completo (lo recomendado)
 
 ```
-"Cree 3 agentes. Estan trabajando..."
-"El agente de docs termino."
-"El agente de tests termino."
-"El agente de backend termino. Mergeando..."
-"Listo. Todo mergeado. 0 conflictos. Aca el resumen:"
+┌──────────────────────────────────┬──────────────────┐
+│  "coder"                         │  "researcher"    │
+│                                  │                  │
+│  "Implementa auth, payments      │  "Buscame las    │
+│   y notifications en paralelo    │   mejores libs   │
+│   con worktrees"                 │   para emails"   │
+│                                  │                  │
+│  → internamente crea 3 agentes   │  → solo busca,   │
+│    cada uno en su copia aislada  │    no toca codigo │
+│    y al final mergea todo        │                  │
+├──────────────────────────────────┼──────────────────┤
+│  "planner"                       │  "reviewer"      │
+│                                  │                  │
+│  "Planifica el roadmap del       │  "Cuando el      │
+│   proximo sprint"                │   coder termine, │
+│                                  │   revisale todo" │
+│  → arma documentos,              │                  │
+│    no toca codigo                │  → lee y analiza │
+└──────────────────────────────────┴──────────────────┘
 ```
 
-Para la guia completa: [Agent Teams + Worktrees Guide](docs/agent-teams-guide.md)
+Asi tenes lo mejor de ambos mundos:
+- **Paneles** para separar roles (nadie se pisa)
+- **Worktrees** dentro del panel que codea (paralelismo seguro)
+
+Para la guia completa de worktrees: [Agent Teams + Worktrees Guide](docs/agent-teams-guide.md)
 
 ---
 
