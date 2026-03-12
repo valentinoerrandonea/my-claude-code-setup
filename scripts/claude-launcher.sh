@@ -22,12 +22,13 @@ fi
 CLAUDE="$CLAUDE_BIN --dangerously-skip-permissions"
 SESSION="claude-work"
 MODE="${1:-attach}"
+WORK_DIR="${2:-$PWD}"
 
 case $MODE in
     new)
         # Kill existing session and create a fresh one
         tmux kill-session -t $SESSION 2>/dev/null
-        tmux new-session -d -s $SESSION -n "claude" "zsh -l"
+        tmux new-session -d -s $SESSION -n "claude" -c "$WORK_DIR" "zsh -l"
         sleep 2
         tmux send-keys -t $SESSION "$CLAUDE" Enter
         tmux attach -t $SESSION
@@ -35,7 +36,7 @@ case $MODE in
     resume)
         # New tmux + Claude Code resuming last conversation
         tmux kill-session -t $SESSION 2>/dev/null
-        tmux new-session -d -s $SESSION -n "claude" "zsh -l"
+        tmux new-session -d -s $SESSION -n "claude" -c "$WORK_DIR" "zsh -l"
         sleep 2
         tmux send-keys -t $SESSION "$CLAUDE --continue" Enter
         tmux attach -t $SESSION
@@ -43,7 +44,7 @@ case $MODE in
     pick)
         # New tmux + Claude Code with session picker
         tmux kill-session -t $SESSION 2>/dev/null
-        tmux new-session -d -s $SESSION -n "claude" "zsh -l"
+        tmux new-session -d -s $SESSION -n "claude" -c "$WORK_DIR" "zsh -l"
         sleep 2
         tmux send-keys -t $SESSION "$CLAUDE --resume" Enter
         tmux attach -t $SESSION
@@ -54,7 +55,7 @@ case $MODE in
         if [ $? -eq 0 ]; then
             tmux attach -t $SESSION
         else
-            tmux new-session -d -s $SESSION -n "claude" "zsh -l"
+            tmux new-session -d -s $SESSION -n "claude" -c "$WORK_DIR" "zsh -l"
             sleep 2
             tmux send-keys -t $SESSION "$CLAUDE" Enter
             tmux attach -t $SESSION

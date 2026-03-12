@@ -77,10 +77,10 @@ Escribilos en tu terminal (Ghostty):
 
 | Comando | Que hace |
 |---------|----------|
-| `cc` | Abre Claude Code. Si ya habia una sesion, te reconecta |
-| `ccnew` | Borra todo y arranca un Claude Code nuevo de cero |
-| `ccresume` | Abre Claude Code y continua tu ultima conversacion |
-| `ccpick` | Te muestra una lista de conversaciones pasadas para elegir |
+| `cc` | Abre Claude Code **en el directorio donde estes parado**. Si ya habia una sesion, te reconecta |
+| `ccnew` | Borra todo y arranca un Claude Code nuevo de cero (en el directorio actual) |
+| `ccresume` | Abre Claude Code y continua tu ultima conversacion (en el directorio actual) |
+| `ccpick` | Te muestra una lista de conversaciones pasadas para elegir (en el directorio actual) |
 
 ### Atajos de teclado (dentro de Ghostty + tmux)
 

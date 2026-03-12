@@ -57,7 +57,8 @@ Tell the user:
 - tmux prefix is **Ctrl+A** (not Ctrl+B)
 - `macos-option-as-alt = true` is set in Ghostty for tmux keybindings to work
 - Claude Code instances spawn with `--dangerously-skip-permissions` flag
-- The launcher uses `zsh -l` + `sleep 2` + `send-keys` pattern for proper shell init
+- The launcher uses `zsh -l` + `-c "$WORK_DIR"` + `sleep 2` + `send-keys` pattern for proper shell init
+- Shell functions pass `$PWD` to the launcher so Claude Code opens in the current directory
 - `tmux-continuum` restore is disabled to prevent stale sessions
 
 ### File Locations After Install
