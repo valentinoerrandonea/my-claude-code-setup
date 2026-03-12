@@ -38,7 +38,7 @@ Cmd+Ctrl+R      # Rename panels for clarity
 
 **Location:** `~/claude-tools/claude-swarm`
 **Type:** Python
-**Repo:** https://github.com/claudio-silva/claude-swarm
+**Repo:** https://github.com/affaan-m/claude-swarm
 
 Define agent networks in YAML. Each agent has a role, instructions, and can communicate with other agents.
 
@@ -72,7 +72,7 @@ cd ~/claude-tools/claude-swarm
 
 **Location:** `~/claude-tools/zerg`
 **Type:** Python
-**Repo:** https://github.com/codeium/zerg
+**Repo:** https://github.com/rocklambros/zerg
 
 Swarm framework for spinning up coordinated groups of Claude Code agents. Focused on parallel task execution.
 
@@ -87,7 +87,7 @@ cd ~/claude-tools/zerg
 
 **Location:** `~/claude-tools/overstory`
 **Type:** Bun/Node
-**Repo:** https://github.com/overtone-app/overstory
+**Repo:** https://github.com/jayminwest/overstory
 
 Visual monitoring UI for Claude Code agents. See what each agent is doing in real-time through a web dashboard.
 
@@ -103,7 +103,7 @@ Then open the displayed URL in your browser.
 
 **Location:** `~/claude-tools/ccswarm`
 **Type:** Rust
-**Repo:** https://github.com/deansher/ccswarm
+**Repo:** https://github.com/nwiizo/ccswarm
 
 High-performance coordinator for Claude Code instances. Written in Rust for minimal overhead.
 
@@ -116,15 +116,16 @@ cargo build --release
 
 ## Ruflo
 
-**Location:** Global (npm)
+**Location:** `~/claude-tools/ruflo`
 **Type:** Node.js
-**Repo:** https://github.com/ruflo/ruflo
+**Repo:** https://github.com/ruvnet/ruflo
 
-Workflow automation tool. Define multi-step pipelines where each step can be handled by a different agent.
+Agent orchestration platform. Deploys specialized agents with native MCP integration.
 
 **Usage:**
 ```bash
-ruflo --help
+cd ~/claude-tools/ruflo
+npm start -- --help
 ```
 
 ## Reference Repositories

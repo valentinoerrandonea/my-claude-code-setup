@@ -25,7 +25,7 @@ source "$VENV_DIR/bin/activate"
 # ── Claude Swarm ─────────────────────────────────────────────
 echo "==> Installing Claude Swarm..."
 if [[ ! -d "$TOOLS_DIR/claude-swarm" ]]; then
-    git clone https://github.com/claudio-silva/claude-swarm.git "$TOOLS_DIR/claude-swarm"
+    git clone https://github.com/affaan-m/claude-swarm.git "$TOOLS_DIR/claude-swarm"
 fi
 cd "$TOOLS_DIR/claude-swarm"
 pip install -e . 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true
@@ -34,7 +34,7 @@ echo "    Claude Swarm installed"
 # ── Zerg ─────────────────────────────────────────────────────
 echo "==> Installing Zerg..."
 if [[ ! -d "$TOOLS_DIR/zerg" ]]; then
-    git clone https://github.com/codeium/zerg.git "$TOOLS_DIR/zerg"
+    git clone https://github.com/rocklambros/zerg.git "$TOOLS_DIR/zerg"
 fi
 cd "$TOOLS_DIR/zerg"
 pip install -e . 2>/dev/null || pip install -r requirements.txt 2>/dev/null || true
@@ -45,7 +45,7 @@ deactivate
 # ── Overstory (Bun/Node) ────────────────────────────────────
 echo "==> Installing Overstory..."
 if [[ ! -d "$TOOLS_DIR/overstory" ]]; then
-    git clone https://github.com/overtone-app/overstory.git "$TOOLS_DIR/overstory"
+    git clone https://github.com/jayminwest/overstory.git "$TOOLS_DIR/overstory"
 fi
 cd "$TOOLS_DIR/overstory"
 if command -v bun &>/dev/null; then
@@ -58,7 +58,7 @@ echo "    Overstory installed"
 # ── ccswarm (Rust) ───────────────────────────────────────────
 echo "==> Installing ccswarm..."
 if [[ ! -d "$TOOLS_DIR/ccswarm" ]]; then
-    git clone https://github.com/deansher/ccswarm.git "$TOOLS_DIR/ccswarm"
+    git clone https://github.com/nwiizo/ccswarm.git "$TOOLS_DIR/ccswarm"
 fi
 cd "$TOOLS_DIR/ccswarm"
 if command -v cargo &>/dev/null; then
@@ -70,9 +70,13 @@ echo "    ccswarm installed"
 
 # ── Ruflo (npm global) ──────────────────────────────────────
 echo "==> Installing Ruflo..."
+if [[ ! -d "$TOOLS_DIR/ruflo" ]]; then
+    git clone https://github.com/ruvnet/ruflo.git "$TOOLS_DIR/ruflo"
+fi
+cd "$TOOLS_DIR/ruflo"
 if command -v npm &>/dev/null; then
-    npm install -g ruflo 2>/dev/null || true
-    echo "    Ruflo installed globally"
+    npm install 2>/dev/null || true
+    echo "    Ruflo installed"
 else
     echo "    WARNING: npm not found. Skipping Ruflo."
 fi
@@ -81,9 +85,9 @@ fi
 echo "==> Cloning reference repositories..."
 
 repos=(
-    "anthropics/claude-code-mcp-servers:mcp-servers"
+    "modelcontextprotocol/servers:mcp-servers"
     "punkpeye/awesome-mcp-servers:awesome-mcp-servers"
-    "anthropics/awesome-claude-code:awesome-claude-code"
+    "hesreallyhim/awesome-claude-code:awesome-claude-code"
     "wshobson/agents:agents-reference"
 )
 

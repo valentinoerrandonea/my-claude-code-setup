@@ -103,14 +103,14 @@ La mayoria de los archivos de este repositorio son **instrucciones que lee Claud
 
 Abri Claude Code y decile:
 
-> "Clona este repo e instala todo: `<url-del-repo>`"
+> "Clona este repo e instala todo: `https://github.com/valentinoerrandonea/my-claude-code-setup.git`"
 
 Claude Code lee el archivo `CLAUDE.md` del repo y ejecuta toda la instalacion automaticamente. No tenes que hacer nada mas.
 
 ### Opcion 2: Correr el instalador manualmente
 
 ```bash
-git clone <url-del-repo>
+git clone https://github.com/valentinoerrandonea/my-claude-code-setup.git
 cd claude-code-power-setup
 chmod +x install.sh scripts/*.sh
 ./install.sh
@@ -386,11 +386,11 @@ Herramientas avanzadas para orquestar muchos Claudes automaticamente:
 
 | Herramienta | Que es en simple | Lenguaje |
 |:------------|:-----------------|:---------|
-| [Claude Swarm](https://github.com/claudio-silva/claude-swarm) | Director de orquesta: define roles y los coordina | Python |
-| [Zerg](https://github.com/codeium/zerg) | General de ejercito: manda muchos agentes en paralelo | Python |
-| [Overstory](https://github.com/overtone-app/overstory) | Panel de control: ves que hace cada agente en un dashboard | Bun/Node |
-| [ccswarm](https://github.com/deansher/ccswarm) | Coordinador ultra-rapido hecho en Rust | Rust |
-| [Ruflo](https://github.com/ruflo/ruflo) | Linea de produccion: automatiza pasos en secuencia | Node.js |
+| [Claude Swarm](https://github.com/affaan-m/claude-swarm) | Director de orquesta: define roles y los coordina | Python |
+| [Zerg](https://github.com/rocklambros/zerg) | General de ejercito: manda muchos agentes en paralelo | Python |
+| [Overstory](https://github.com/jayminwest/overstory) | Panel de control: ves que hace cada agente en un dashboard | TypeScript |
+| [ccswarm](https://github.com/nwiizo/ccswarm) | Coordinador ultra-rapido hecho en Rust | Rust |
+| [Ruflo](https://github.com/ruvnet/ruflo) | Plataforma de orquestacion de agentes | Node.js |
 
 </details>
 
@@ -399,9 +399,9 @@ Herramientas avanzadas para orquestar muchos Claudes automaticamente:
 
 | Repo | Que tiene |
 |:-----|:---------|
-| [awesome-claude-code](https://github.com/anthropics/awesome-claude-code) | Lista curada de tips, trucos y recursos |
+| [awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) | Lista curada de tips, trucos y recursos |
 | [agents](https://github.com/wshobson/agents) | Ejemplos de agentes personalizados |
-| [claude-code-mcp-servers](https://github.com/anthropics/claude-code-mcp-servers) | Conectores oficiales (bases de datos, APIs, etc.) |
+| [MCP Servers](https://github.com/modelcontextprotocol/servers) | Servidores MCP de referencia oficial |
 | [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | Conectores de la comunidad (Google Drive, Slack, etc.) |
 
 </details>
