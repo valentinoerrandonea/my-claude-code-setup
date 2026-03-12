@@ -223,7 +223,9 @@ Claude:
 
 ## Agentes incluidos en este setup
 
-Este setup instala 4 agentes listos para usar:
+Este setup instala **146 agentes** listos para usar: 4 originales + 142 de [agency-agents](https://github.com/msitarzewski/agency-agents).
+
+### Agentes originales
 
 | Agente | Que hace | Se activa cuando decis |
 |:-------|:---------|:----------------------|
@@ -232,8 +234,35 @@ Este setup instala 4 agentes listos para usar:
 | **tdd-guide** | Guia desarrollo con tests primero (RED-GREEN-REFACTOR) | "Escribi tests", "Implementa con TDD" |
 | **planner** | Planifica antes de codear: investiga, analiza, arma plan | "Planifica esta feature", "Como implemento esto?" |
 
+### Agentes por categoria (agency-agents)
+
+| Categoria | Cant. | Agentes incluidos |
+|:----------|:------|:------------------|
+| **Engineering** | 21 | AI engineer, backend architect, frontend developer, devops automator, security engineer, SRE, database optimizer, mobile app builder, technical writer, y mas |
+| **Marketing** | 25 | SEO specialist, content creator, growth hacker, Instagram curator, TikTok/LinkedIn/Twitter strategists, podcast strategist, y mas |
+| **Design** | 8 | UX architect, UX researcher, UI designer, brand guardian, image prompt engineer, visual storyteller, whimsy injector |
+| **Sales** | 8 | Sales coach, deal strategist, pipeline analyst, outbound strategist, discovery coach, proposal strategist, engineer |
+| **Testing** | 8 | API tester, performance benchmarker, accessibility auditor, workflow optimizer, evidence collector, reality checker |
+| **Game Development** | 16 | Unity (architect, shader, multiplayer), Unreal (systems, world builder), Godot, Roblox, narrative/level designer, technical artist |
+| **Project Management** | 6 | Senior PM, Jira workflow steward, studio producer, studio operations, experiment tracker |
+| **Product** | 4 | Sprint prioritizer, feedback synthesizer, trend researcher, behavioral nudge engine |
+| **Paid Media** | 7 | PPC strategist, programmatic buyer, creative strategist, tracking specialist, auditor |
+| **Support** | 6 | Support responder, finance tracker, legal compliance checker, infrastructure maintainer |
+| **Spatial Computing** | 6 | visionOS spatial engineer, XR immersive developer, Metal engineer, cockpit interaction specialist |
+| **Specialized** | 21 | MCP builder, blockchain auditor, compliance auditor, agents orchestrator, developer advocate, document generator, y mas |
+
+### Strategy playbooks y runbooks
+
+Ademas de los agentes, se incluyen documentos de estrategia en `configs/strategy/`:
+
+| Documento | Que contiene |
+|:----------|:-------------|
+| **Playbooks** (7 fases) | Discovery → Strategy → Foundation → Build → Hardening → Launch → Operate |
+| **Runbooks** (4 escenarios) | Startup MVP, Enterprise Feature, Incident Response, Marketing Campaign |
+| **Coordination** | Templates de handoff entre agentes, prompts de activacion |
+
 > [!TIP]
-> Estos agentes estan en `~/.claude/agents/` y tambien en `configs/agents/` del repo. Podes modificarlos, mejorarlos, o crear nuevos y mandar un PR para que otros los usen tambien.
+> Todos los agentes estan en `~/.claude/agents/` y tambien en `configs/agents/` del repo. Podes modificarlos, mejorarlos, o crear nuevos y mandar un PR para que otros los usen tambien.
 
 ---
 
