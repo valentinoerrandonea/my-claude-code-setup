@@ -1,262 +1,350 @@
 # Claude Code Power Setup
 
-A complete, opinionated setup for running Claude Code like a power user. Multiple AI agents in a tiled tmux grid, one-keystroke spawning, global coding rules, and multi-agent orchestration tools.
+Un setup completo para usar Claude Code como un profesional. Multiples agentes de IA trabajando en paralelo, en una grilla dentro de tu terminal, con un solo atajo de teclado.
 
-## What You Get
+---
 
-- **tmux-powered multi-agent workflow**: Spawn multiple Claude Code instances in a tiled grid with a single keystroke
-- **Ghostty terminal integration**: Cmd+N to spawn agents, Option+Ctrl+arrows to navigate
-- **Smart launcher commands**: `cc`, `ccnew`, `ccresume`, `ccpick`
-- **Global coding rules**: TDD, security checks, immutability, conventional commits - active in every project
-- **Multi-agent tools**: Claude Swarm, Zerg, Overstory, ccswarm, Ruflo
-- **Tokyo Night themed tmux**: Pane titles, status bar, visual indicators
+## Que es esto?
 
-## Quick Start
+Este repositorio es un **kit de instalacion automatica** que configura tu computadora para trabajar con Claude Code de la manera mas productiva posible.
 
-### Prerequisites
+En vez de tener un solo Claude Code abierto, este setup te permite:
 
-- **macOS** or **Linux**
-- **Git** installed
-- **Homebrew** (macOS only)
-- **Node.js** or **Bun** (for Claude Code installation)
-- **Ghostty** terminal (download from [ghostty.org](https://ghostty.org))
-- **Claude Code account**: Pro, Max, Teams, or Enterprise
+- Tener **varios Claude Code al mismo tiempo** en una grilla (uno escribe codigo, otro hace tests, otro revisa seguridad)
+- Abrir nuevos agentes con **un solo atajo de teclado** (`Cmd+N`)
+- Moverte entre ellos con **las flechas del teclado**
+- Ponerle **nombres** a cada panel para saber que esta haciendo cada uno
+- Tener **reglas globales** que hacen que Claude escriba mejor codigo automaticamente
+- Acceder a **herramientas avanzadas** de orquestacion multi-agente
 
-### Install
+Todo se instala y configura automaticamente. Vos no tenes que tocar nada.
 
-Clone this repo and run the installer:
+### Como funciona?
+
+La mayoria de los archivos de este repositorio son **instrucciones que lee Claude Code**, no vos. Cuando le decis a tu Claude Code "instala esto", el lee los archivos `CLAUDE.md` y `CONTRIBUTING.md`, entiende que tiene que hacer, y lo hace solo.
+
+Vos solo le das la orden. El hace el resto.
+
+---
+
+## Que necesitas antes de empezar
+
+| Requisito | Donde conseguirlo |
+|-----------|-------------------|
+| **macOS** o **Linux** | Ya lo tenes |
+| **Git** | macOS: viene instalado. Linux: `sudo apt install git` |
+| **Homebrew** (solo macOS) | [brew.sh](https://brew.sh) |
+| **Node.js** o **Bun** | [nodejs.org](https://nodejs.org) o [bun.sh](https://bun.sh) |
+| **Ghostty** (terminal) | [ghostty.org](https://ghostty.org) |
+| **Cuenta de Claude** | Pro, Max, Teams o Enterprise en [claude.ai](https://claude.ai) |
+| **Claude Code** instalado | Se instala automaticamente, pero si lo queres hacer manual: `npm install -g @anthropic-ai/claude-code` |
+
+---
+
+## Como instalarlo
+
+### Opcion 1: Decile a tu Claude Code (recomendado)
+
+Abri Claude Code y decile:
+
+> "Clona este repo e instala todo: `<url-del-repo>`"
+
+Claude Code lee el archivo `CLAUDE.md` del repo y ejecuta toda la instalacion automaticamente. No tenes que hacer nada mas.
+
+### Opcion 2: Correr el instalador manualmente
 
 ```bash
-git clone https://github.com/<your-user>/claude-code-power-setup.git
+git clone <url-del-repo>
 cd claude-code-power-setup
 chmod +x install.sh scripts/*.sh
 ./install.sh
 ```
 
-Or ask your Claude Code to do it:
+### Despues de instalar
 
-> "Clone and install everything from this repo: `<repo-url>`"
+1. **Recarga tu shell**: `source ~/.zshrc`
+2. **Autenticate** (si es la primera vez): escribi `claude` y segui el login en el navegador
+3. **Reinicia Ghostty** para que tome la nueva config
+4. **Listo!** Escribi `cc` para arrancar
 
-Claude Code will read the `CLAUDE.md` file and execute the installation automatically.
+---
 
-For a minimal install (skip multi-agent tools):
+## Como se usa
 
-```bash
-./install.sh --minimal
-```
+### Los 4 comandos para arrancar
 
-### After Installation
+Escribilos en tu terminal (Ghostty):
 
-1. Reload your shell: `source ~/.zshrc`
-2. Authenticate Claude Code (if first time): `claude`
-3. Restart Ghostty to apply the terminal config
-4. Launch: `cc`
+| Comando | Que hace |
+|---------|----------|
+| `cc` | Abre Claude Code. Si ya habia una sesion, te reconecta |
+| `ccnew` | Borra todo y arranca un Claude Code nuevo de cero |
+| `ccresume` | Abre Claude Code y continua tu ultima conversacion |
+| `ccpick` | Te muestra una lista de conversaciones pasadas para elegir |
 
-## Commands
+### Atajos de teclado (dentro de Ghostty + tmux)
 
-| Command | Action |
-|---------|--------|
-| `cc` | Open tmux with Claude Code (reconnects if session exists) |
-| `ccnew` | Kill existing session, start fresh |
-| `ccresume` | Start Claude Code continuing last conversation |
-| `ccpick` | Start Claude Code with conversation picker |
+#### Crear y manejar paneles
 
-## Keybindings (Inside tmux + Ghostty)
+| Atajo | Que hace |
+|-------|----------|
+| `Cmd+N` | Abre un nuevo Claude Code al lado (se acomodan solos en grilla) |
+| `Cmd+Shift+N` | Abre un nuevo Claude Code abajo |
+| `Cmd+Ctrl+R` | Renombra el panel actual (ej: "backend", "tests") |
+| `Cmd+Shift+=` | Redistribuye todos los paneles en partes iguales |
 
-### Spawning & Managing Panels
+#### Moverse entre paneles
 
-| Keybinding | Action |
-|------------|--------|
-| `Cmd+N` | New Claude Code panel (auto-tiled) |
-| `Cmd+Shift+N` | New Claude Code panel (vertical, auto-tiled) |
-| `Cmd+Ctrl+R` | Rename current panel |
-| `Cmd+Shift+=` | Redistribute panels equally |
+| Atajo | Que hace |
+|-------|----------|
+| `Option+Ctrl+Flechas` | Salta al panel de la izquierda, derecha, arriba o abajo |
+| Click del mouse | Hace foco en el panel que clickeas |
+| Scroll del mouse | Scrollea el output del panel |
 
-### Navigation
+#### Otros atajos utiles
 
-| Keybinding | Action |
-|------------|--------|
-| `Option+Ctrl+Arrow` | Move between panels |
-| `Ctrl+Arrow` | Resize panels |
-| Mouse click | Focus panel |
-| Mouse scroll | Scroll output |
+| Atajo | Que hace |
+|-------|----------|
+| `Ctrl+A` luego `d` | Desconectar de tmux (la sesion sigue viva en segundo plano) |
+| `Ctrl+D` o `exit` | Cerrar el panel actual |
+| `` Cmd+` `` | Terminal dropdown rapido (aparece desde arriba) |
+| `Cmd+Shift+,` | Recargar config de Ghostty |
 
-### tmux Prefix Commands (Ctrl+A, then...)
-
-| Key | Action |
-|-----|--------|
-| `\|` | Split horizontally |
-| `-` | Split vertically |
-| `d` | Detach (session stays alive) |
-| `r` | Reload tmux config |
-| `t` | Rename panel title |
-
-See [docs/keybindings-reference.md](docs/keybindings-reference.md) for the full list.
-
-## Architecture
+### Ejemplo: Trabajar con 3 agentes a la vez
 
 ```
-~/.config/ghostty/config     Ghostty terminal config with tmux keybindings
-~/.tmux.conf                 tmux config: theme, plugins, Claude Code bindings
-~/claude-launcher.sh         Launcher script (cc/ccnew/ccresume/ccpick)
-~/.claude/rules/             Global coding rules (TDD, security, style, etc.)
-~/.claude/settings.json      Agent teams enabled, permissions config
-~/.tmux/plugins/             tmux plugins via TPM
-~/claude-tools/              Multi-agent tools and reference repos
+1. Abri terminal y escribi: cc
+2. Tocas Cmd+N → aparece un segundo Claude Code
+3. Tocas Cmd+N → aparece un tercero (grilla de 3)
+4. Tocas Cmd+Ctrl+R → escribis "main"
+5. Te moves al segundo con Option+Ctrl+Derecha
+6. Tocas Cmd+Ctrl+R → escribis "tests"
+7. Te moves al tercero
+8. Tocas Cmd+Ctrl+R → escribis "docs"
 ```
 
-## What Gets Installed
+Ahora le decis a cada uno que hacer:
+- **main**: "Implementa la API de autenticacion"
+- **tests**: "Escribi tests de integracion para los endpoints de auth"
+- **docs**: "Actualiza la documentacion de la API"
 
-### Core Stack
+Los tres trabajan al mismo tiempo. Te moves entre ellos para ver como van.
 
-| Component | Description |
-|-----------|-------------|
-| **Claude Code** | AI coding assistant CLI |
-| **tmux** | Terminal multiplexer |
-| **TPM** | tmux Plugin Manager |
-| **tmux-yank** | Copy to system clipboard with mouse |
-| **tmux-better-mouse-mode** | Enhanced mouse support (scroll in less/man) |
-| **tmux-resurrect** | Save/restore tmux sessions |
-| **tmux-continuum** | Auto-save sessions (restore disabled) |
-| **tmux-sensible** | Sensible default settings |
-| **tmux-open** | Open files/URLs from tmux |
+---
 
-### Claude Code Enhancements
+## Que se instala exactamente
 
-| Component | Description |
-|-----------|-------------|
-| **Global rules** | From [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
-| **Agent teams** | Experimental multi-agent feature enabled |
-| **Bypass permissions** | `--dangerously-skip-permissions` on all instances |
+### Lo esencial
 
-### Multi-Agent Tools
+| Componente | Que es | Para que sirve |
+|------------|--------|----------------|
+| **Claude Code** | Asistente de IA en la terminal | El cerebro de todo. Le hablas y codea por vos |
+| **tmux** | Multiplicador de pantallas | Divide tu terminal en multiples paneles |
+| **Ghostty config** | Configuracion del terminal | Atajos de teclado, tema visual, transparencia |
+| **Launcher script** | Script de arranque | Los comandos `cc`, `ccnew`, `ccresume`, `ccpick` |
 
-| Tool | Language | Description |
-|------|----------|-------------|
-| [Claude Swarm](https://github.com/claudio-silva/claude-swarm) | Python | YAML-defined agent networks |
-| [Zerg](https://github.com/codeium/zerg) | Python | Coordinated agent swarms |
-| [Overstory](https://github.com/overtone-app/overstory) | Bun/Node | Visual agent monitoring UI |
-| [ccswarm](https://github.com/deansher/ccswarm) | Rust | High-performance coordinator |
-| [Ruflo](https://github.com/ruflo/ruflo) | Node.js | Workflow automation pipelines |
+### Plugins de tmux (se instalan solos)
 
-### Reference Repos
+| Plugin | Que hace |
+|--------|----------|
+| **tmux-yank** | Seleccionar texto con mouse = copiado al clipboard |
+| **tmux-better-mouse-mode** | Scroll con mouse funciona en todos lados |
+| **tmux-resurrect** | Guarda tus paneles y los restaura si se cierra |
+| **tmux-continuum** | Auto-guarda cada 15 minutos |
+| **tmux-sensible** | Configuraciones logicas por defecto |
+| **tmux-open** | Click en URLs para abrirlas en el navegador |
 
-| Repo | Description |
-|------|-------------|
-| [awesome-claude-code](https://github.com/anthropics/awesome-claude-code) | Curated resources and tips |
-| [agents](https://github.com/wshobson/agents) | Example agent implementations |
-| [claude-code-mcp-servers](https://github.com/anthropics/claude-code-mcp-servers) | Official MCP servers |
-| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | Community MCP servers |
+### Reglas globales para Claude Code
 
-## Workflow Examples
+Se instalan en `~/.claude/rules/` y hacen que **cualquier Claude Code en cualquier proyecto** sea mas inteligente:
 
-### Daily Solo Development
+| Regla | Que le dice a Claude |
+|-------|---------------------|
+| **coding-style** | Codigo limpio, archivos chicos, inmutabilidad |
+| **testing** | Escribir tests primero, minimo 80% cobertura |
+| **security** | Nunca poner passwords en el codigo, validar todo |
+| **git-workflow** | Commits con formato claro (`feat:`, `fix:`, etc.) |
+| **development-workflow** | Investigar antes de codear, planificar primero |
+| **performance** | Usar el modelo correcto para cada tarea |
+| **agents** | Usar multiples agentes en paralelo cuando corresponde |
 
-```bash
-cc                          # Start Claude Code
-# ... work on features ...
-# Close terminal (session stays alive)
-cc                          # Reconnect later
+### Herramientas multi-agente
+
+Herramientas avanzadas para orquestar muchos Claudes automaticamente:
+
+| Herramienta | Que es en simple | Lenguaje |
+|-------------|-----------------|----------|
+| [Claude Swarm](https://github.com/claudio-silva/claude-swarm) | Director de orquesta: define roles y los coordina | Python |
+| [Zerg](https://github.com/codeium/zerg) | General de ejercito: manda muchos agentes en paralelo | Python |
+| [Overstory](https://github.com/overtone-app/overstory) | Panel de control: ves que hace cada agente en un dashboard | Bun/Node |
+| [ccswarm](https://github.com/deansher/ccswarm) | Coordinador ultra-rapido hecho en Rust | Rust |
+| [Ruflo](https://github.com/ruflo/ruflo) | Linea de produccion: automatiza pasos en secuencia | Node.js |
+
+### Repos de referencia
+
+| Repo | Que tiene |
+|------|----------|
+| [awesome-claude-code](https://github.com/anthropics/awesome-claude-code) | Lista curada de tips, trucos y recursos |
+| [agents](https://github.com/wshobson/agents) | Ejemplos de agentes personalizados |
+| [claude-code-mcp-servers](https://github.com/anthropics/claude-code-mcp-servers) | Conectores oficiales (bases de datos, APIs, etc.) |
+| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | Conectores de la comunidad (Google Drive, Slack, etc.) |
+
+---
+
+## Cosas que podes pedirle a Claude Code
+
+Este setup esta pensado para que vos le hables a Claude Code y el haga las cosas. Aca van ejemplos concretos de cosas que podes pedirle:
+
+### Instalar algo nuevo
+
+> "Instala la herramienta X y configurala globalmente"
+
+Claude Code va a:
+1. Crear un branch nuevo
+2. Instalar la herramienta
+3. Agregar un script de instalacion
+4. Documentar todo
+5. Crear un PR para que vos lo apruebes
+
+### Mejorar algo existente
+
+> "Mejora la config de tmux para que tenga mejor soporte de colores"
+
+Claude Code modifica lo necesario, actualiza la documentacion y crea un PR.
+
+### Agregar una skill o regla nueva
+
+> "Agrega una skill que revise la accesibilidad del codigo"
+
+Claude Code la crea, la configura globalmente (para que funcione en cualquier proyecto), la documenta, y crea un PR.
+
+### Arreglar algo roto
+
+> "El comando ccresume no funciona, arreglalo"
+
+Claude Code diagnostica el problema, lo arregla, actualiza troubleshooting si corresponde, y crea un PR.
+
+**IMPORTANTE:** Todos los cambios se hacen en un branch nuevo y generan un PR. Nada se mergea a `main` sin tu aprobacion.
+
+---
+
+## Como contribuir (vos o tus amigos)
+
+Este repo esta vivo. Crece cada vez que alguien agrega algo nuevo.
+
+### El flujo es asi:
+
+1. **Decile a tu Claude Code que hacer** (ej: "agrega tal herramienta")
+2. Claude Code lee las reglas del repo (`CLAUDE.md`, `CONTRIBUTING.md`)
+3. **Crea un branch nuevo** automaticamente (nunca toca `main` directo)
+4. **Hace los cambios**: instala, configura, escribe scripts
+5. **Actualiza TODA la documentacion**: guia de tools, README, keybindings, troubleshooting
+6. **Crea un Pull Request** con formato estandar
+7. **Vos lo revisas** y lo aprobas (o pedis cambios)
+8. Se mergea a `main`
+
+### Reglas que sigue Claude Code automaticamente
+
+- Todo cambio va en un **branch nuevo** (`tool/nombre`, `skill/nombre`, `fix/nombre`, etc.)
+- Todo lo nuevo debe estar **documentado en lenguaje simple** (sin jerga tecnica)
+- Las tools y skills se instalan **globalmente** (funcionan desde cualquier directorio)
+- Los PRs tienen **formato estandar** con seccion de "Que", "Por que", "Que cambio", checklist
+- Ningun path esta hardcodeado a un usuario especifico (usa `$HOME`)
+- Se hacen **backups** de configs existentes antes de sobreescribir
+
+Todo esto esta detallado en [`CONTRIBUTING.md`](CONTRIBUTING.md) y en la Parte 2 del [`CLAUDE.md`](CLAUDE.md).
+
+---
+
+## Donde esta cada cosa despues de instalar
+
+```
+~/.config/ghostty/config     ← Config del terminal (tema, atajos, transparencia)
+~/.tmux.conf                 ← Config de tmux (tema, plugins, bindings de Claude)
+~/claude-launcher.sh         ← Script que ejecutan cc, ccnew, ccresume, ccpick
+~/.claude/rules/             ← Reglas globales (TDD, seguridad, estilo, etc.)
+~/.claude/settings.json      ← Settings de Claude Code (agent teams, permisos)
+~/.tmux/plugins/             ← Plugins de tmux (yank, mouse, resurrect, etc.)
+~/claude-tools/              ← Herramientas multi-agente y repos de referencia
 ```
 
-### Multi-Agent Feature Development
+---
 
-```bash
-cc                          # Start main agent
-Cmd+N                       # Spawn test agent
-Cmd+N                       # Spawn docs agent
-Cmd+Ctrl+R → "main"        # Label panels
-Cmd+Ctrl+R → "tests"
-Cmd+Ctrl+R → "docs"
-```
+## Personalizacion
 
-Give each agent its task:
-- **main**: "Implement user authentication API"
-- **tests**: "Write integration tests for auth endpoints"
-- **docs**: "Update API documentation for auth"
+### Cambiar el tema de tmux
 
-### Parallel Exploration
+Edita `~/.tmux.conf`. Los colores actuales son Tokyo Night:
+- Fondo: `#1a1b26`
+- Texto: `#a9b1d6`
+- Acento: `#7aa2f7`
 
-```bash
-cc                          # Start agent 1
-Cmd+N                       # Agent 2
-Cmd+N                       # Agent 3
-```
+### Cambiar el tema de Ghostty
 
-- **Agent 1**: "Research the best approach for caching in this app"
-- **Agent 2**: "Analyze the current database query performance"
-- **Agent 3**: "Review the security of the auth implementation"
-
-Synthesize findings from all three agents into a single action plan.
-
-## Customization
-
-### Change the tmux Theme
-
-Edit `~/.tmux.conf` and modify the color values. The current theme uses Tokyo Night colors:
-- Background: `#1a1b26`
-- Foreground: `#a9b1d6`
-- Accent: `#7aa2f7`
-- Muted: `#3b4261`, `#565f89`
-
-### Change the Ghostty Theme
-
-Edit `~/.config/ghostty/config` and change:
+Edita `~/.config/ghostty/config` y cambia la linea:
 ```
 theme = catppuccin-mocha
 ```
+Para ver todos los temas disponibles: `ghostty +list-themes`
 
-Browse available themes: `ghostty +list-themes`
+### Agregar reglas propias para Claude Code
 
-### Add Custom Claude Code Rules
+Crea archivos `.md` en `~/.claude/rules/common/` para reglas globales, o en `/python/` y `/typescript/` para reglas por lenguaje.
 
-Create `.md` files in `~/.claude/rules/common/` for rules that apply to all projects, or in `~/.claude/rules/python/` / `~/.claude/rules/typescript/` for language-specific rules.
+### Desactivar bypass de permisos
 
-### Disable Bypass Permissions
+Edita `~/claude-launcher.sh` y sacale `--dangerously-skip-permissions` a la variable `CLAUDE`. Tambien sacalo de las lineas `bind n` y `bind N` en `~/.tmux.conf`.
 
-Edit `~/claude-launcher.sh` and remove `--dangerously-skip-permissions` from the `CLAUDE` variable. Also edit `~/.tmux.conf` and remove it from the `bind n` and `bind N` lines.
+---
 
-## Documentation
+## Documentacion completa
 
-- [Tools Guide (No-Tech)](docs/tools-guide.md) - Every tool explained in plain language with analogies
-- [Usage Guide](docs/usage-guide.md) - Detailed usage instructions
-- [Keybindings Reference](docs/keybindings-reference.md) - Complete keybinding list
-- [Multi-Agent Tools](docs/multi-agent-tools.md) - Technical guide to multi-agent tools
-- [Troubleshooting](docs/troubleshooting.md) - Common issues and fixes
-- [Contributing](CONTRIBUTING.md) - How to add tools, skills, and improvements
+| Documento | Que tiene |
+|-----------|----------|
+| [Guia de Tools (No-Tech)](docs/tools-guide.md) | Cada herramienta explicada con analogias de la vida real |
+| [Guia de Uso](docs/usage-guide.md) | Instrucciones detalladas de como usar todo |
+| [Referencia de Atajos](docs/keybindings-reference.md) | Tabla completa de todos los atajos de teclado |
+| [Herramientas Multi-Agente](docs/multi-agent-tools.md) | Guia tecnica de las herramientas de orquestacion |
+| [Troubleshooting](docs/troubleshooting.md) | Problemas comunes y como resolverlos |
+| [Como Contribuir](CONTRIBUTING.md) | Reglas para agregar cosas nuevas al repo |
 
-## Contributing
+---
 
-This repo is a **living project**. Everyone is welcome to add new tools, skills, configs, and improvements via Pull Requests.
-
-**How it works:** Tell your Claude Code to add something. It reads the `CLAUDE.md` and `CONTRIBUTING.md` files and knows exactly how to:
-1. Create a new branch
-2. Add the tool/skill/config
-3. Update all documentation
-4. Create a properly formatted PR
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full rules.
-
-## Uninstall
+## Desinstalar
 
 ```bash
-# Kill tmux
-tmux kill-server
+tmux kill-server                    # Matar tmux
+rm -f ~/.tmux.conf                  # Borrar config tmux
+rm -rf ~/.tmux/                     # Borrar plugins tmux
+rm -f ~/claude-launcher.sh          # Borrar launcher
+rm -rf ~/.claude/rules/             # Borrar reglas
+rm -f ~/.claude/settings.json       # Borrar settings
+rm -rf ~/claude-tools/              # Borrar herramientas
 
-# Remove configs
-rm -f ~/.tmux.conf
-rm -rf ~/.tmux/
-rm -f ~/claude-launcher.sh
-rm -rf ~/.claude/rules/
-rm -f ~/.claude/settings.json
-rm -rf ~/claude-tools/
-
-# Remove shell functions (edit ~/.zshrc, delete the "Claude Code Power Setup" block)
-
-# Restore Ghostty config from backup
-ls ~/.config/ghostty/config.backup.*
-cp ~/.config/ghostty/config.backup.<timestamp> ~/.config/ghostty/config
+# Editar ~/.zshrc y borrar el bloque "Claude Code Power Setup"
+# Restaurar config de Ghostty desde backup:
+# ls ~/.config/ghostty/config.backup.*
+# cp ~/.config/ghostty/config.backup.<timestamp> ~/.config/ghostty/config
 ```
+
+---
+
+## Nota sobre los archivos de este repo
+
+La mayoria de los archivos aca **no son para que los leas vos**. Son instrucciones que lee Claude Code para saber como instalar, configurar y contribuir automaticamente:
+
+| Archivo | Quien lo lee | Para que |
+|---------|-------------|----------|
+| `CLAUDE.md` | Claude Code | Saber como instalar todo y como hacer PRs |
+| `CONTRIBUTING.md` | Claude Code + humanos | Reglas de contribucion y formato de PRs |
+| `install.sh` | Claude Code (o vos) | Ejecutar la instalacion completa |
+| `scripts/*.sh` | Claude Code (o vos) | Scripts individuales de instalacion |
+| `configs/*` | Los scripts de instalacion | Archivos de config que se copian a tu sistema |
+| `.github/pull_request_template.md` | GitHub | Template automatico cuando se crea un PR |
+| `README.md` | Vos | Este archivo. La explicacion general de todo |
+| `docs/*` | Vos | Guias de uso y referencia |
+
+---
 
 ## License
 
