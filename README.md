@@ -431,16 +431,27 @@ No es una herramienta que se instala aparte. Es una capacidad que ya tiene Claud
 </details>
 
 <details>
-<summary><strong>Agentes personalizados (especialistas reutilizables)</strong></summary>
+<summary><strong>Agentes personalizados (146 especialistas reutilizables)</strong></summary>
 
-Se instalan en `~/.claude/agents/` y Claude los activa automaticamente:
+Se instalan en `~/.claude/agents/` y Claude los activa automaticamente. Incluye los 4 agentes originales mas **142 agentes de [agency-agents](https://github.com/msitarzewski/agency-agents)**:
 
-| Agente | Que hace | Se activa cuando |
-|:-------|:---------|:----------------|
-| **code-reviewer** | Revisa calidad con checklist de 8 puntos | "Revisame el codigo" |
-| **security-reviewer** | Busca 10 categorias de vulnerabilidad | "Revisa la seguridad" |
-| **tdd-guide** | Guia desarrollo test-first (RED-GREEN-REFACTOR) | "Escribi tests" |
-| **planner** | Investiga y planifica antes de codear | "Planifica esta feature" |
+| Categoria | Cantidad | Ejemplos |
+|:----------|:---------|:---------|
+| **Engineering** | 21 | backend-architect, frontend-developer, devops-automator, security-engineer, SRE |
+| **Marketing** | 25 | SEO specialist, content creator, growth hacker, TikTok/Instagram/LinkedIn strategists |
+| **Design** | 8 | UX architect, UI designer, brand guardian, visual storyteller |
+| **Sales** | 8 | sales coach, deal strategist, pipeline analyst, outbound strategist |
+| **Testing** | 8 | API tester, performance benchmarker, accessibility auditor |
+| **Game Development** | 16 | Unity, Unreal, Godot, Roblox, narrative designer, level designer |
+| **Project Management** | 6 | senior PM, Jira workflow steward, studio producer |
+| **Product** | 4 | sprint prioritizer, feedback synthesizer, trend researcher |
+| **Paid Media** | 7 | PPC strategist, programmatic buyer, tracking specialist |
+| **Support** | 6 | support responder, finance tracker, legal compliance checker |
+| **Spatial Computing** | 6 | visionOS engineer, XR developer, Metal engineer |
+| **Specialized** | 21 | MCP builder, blockchain auditor, compliance auditor, orchestrator |
+| **Originales** | 4 | code-reviewer, security-reviewer, tdd-guide, planner |
+
+Tambien incluye **strategy playbooks** con fases de proyecto (discovery → launch → operate) y **runbooks** para escenarios comunes (startup MVP, incident response, marketing campaign).
 
 Podes crear mas agentes vos mismo o pedirle a Claude que los cree. Ver [Guia de Agentes](docs/custom-agents-guide.md).
 

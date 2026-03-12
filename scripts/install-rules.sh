@@ -86,6 +86,20 @@ else
     echo "    WARNING: No agents directory found at $AGENTS_SRC"
 fi
 
+# ── Install strategy docs ─────────────────────────────────
+echo "==> Installing strategy playbooks and runbooks..."
+STRATEGY_SRC="$REPO_DIR/configs/strategy"
+STRATEGY_DIR="$CLAUDE_DIR/strategy"
+if [[ -d "$STRATEGY_SRC" ]]; then
+    mkdir -p "$STRATEGY_DIR/coordination"
+    mkdir -p "$STRATEGY_DIR/playbooks"
+    mkdir -p "$STRATEGY_DIR/runbooks"
+    cp -r "$STRATEGY_SRC"/* "$STRATEGY_DIR/"
+    echo "    Strategy docs installed to $STRATEGY_DIR"
+else
+    echo "    No strategy directory found. Skipping."
+fi
+
 # ── Install Claude settings ─────────────────────────────────
 echo "==> Installing Claude Code settings..."
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
