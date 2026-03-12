@@ -91,6 +91,21 @@ else
 fi
 echo ""
 
+# ── Step 7: Git post-merge hook (auto-sync on pull) ──────────
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  Step 7: Auto-sync hook"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+HOOKS_DIR="$SCRIPT_DIR/.git/hooks"
+if [[ -d "$SCRIPT_DIR/.git" ]]; then
+    mkdir -p "$HOOKS_DIR"
+    cp "$SCRIPT_DIR/scripts/post-merge-hook.sh" "$HOOKS_DIR/post-merge"
+    chmod +x "$HOOKS_DIR/post-merge"
+    echo "    post-merge hook installed: configs auto-sync on git pull"
+else
+    echo "    Not a git repo yet, run git init first for auto-sync"
+fi
+echo ""
+
 # ── Done ─────────────────────────────────────────────────────
 echo "╔═══════════════════════════════════════════════════════════╗"
 echo "║              Installation Complete!                      ║"
